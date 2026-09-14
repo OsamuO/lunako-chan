@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "packet-states.schema.json",
+  "title": "Mutable Packet State Registry",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "packets"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "packets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "packet_id",
+              "status",
+              "verification_evidence"
+            ],
+            "properties": {
+              "packet_id": {
+                "type": "string",
+                "pattern": "^WP-[A-Z0-9-]+$"
+              },
+              "status": {
+                "enum": [
+                  "ready",
+                  "in-progress",
+                  "blocked",
+                  "needs-redesign",
+                  "needs-reverification",
+                  "verified",
+                  "integrated"
+                ]
+              },
+              "verification_evidence": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "packets"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 2
+        },
+        "packets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "packet_id",
+              "status",
+              "verification_evidence",
+              "evidence_not_before"
+            ],
+            "properties": {
+              "packet_id": {
+                "type": "string",
+                "pattern": "^WP-[A-Z0-9-]+$"
+              },
+              "status": {
+                "enum": [
+                  "ready",
+                  "in-progress",
+                  "blocked",
+                  "needs-redesign",
+                  "needs-reverification",
+                  "verified",
+                  "integrated"
+                ]
+              },
+              "verification_evidence": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence_not_before": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

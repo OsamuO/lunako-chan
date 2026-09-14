@@ -1,0 +1,4 @@
+interface:
+  display_name: "Model Escalation"
+  short_description: "Keep LUNA as default and escalate only when Architecture uncertainty requires it"
+  default_prompt: "Use $model-escalation to decide whether this task should remain on LUNA or escalate to SOL."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Work Packet"
+  short_description: "Create or inspect execution responsibility boundaries"
+  default_prompt: "Use $work-packet to create a self-contained packet only when separating execution responsibility has clear value."

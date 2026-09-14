@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "strict-agent-result.schema.json",
+  "title": "Strict Typed Agent Result v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "packet_id", "contract_refs", "outcome", "summary", "touched_files", "commands", "artifacts", "acceptance_results", "blockers", "design_delta", "next_action"],
+  "properties": {
+    "schema_version": {"const": 2},
+    "packet_id": {"type": "string", "pattern": "^WP-[A-Z0-9-]+$"},
+    "contract_refs": {"type": "array", "items": {"type": "string", "pattern": "^C-[0-9]{3}@v[1-9][0-9]*$"}, "minItems": 1, "uniqueItems": true},
+    "outcome": {"enum": ["handoff_ready", "needs_guidance", "self_verify_failed", "contract_mismatch", "blocked", "timeout", "budget_exceeded"]},
+    "summary": {"type": "string", "minLength": 1},
+    "touched_files": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "commands": {"type": "array", "items": {"$ref": "#/$defs/command"}},
+    "artifacts": {"type": "array", "items": {"$ref": "#/$defs/artifact"}},
+    "acceptance_results": {"type": "array", "items": {"$ref": "#/$defs/acceptance"}},
+    "blockers": {"type": "array", "items": {"type": "string"}},
+    "design_delta": {"type": ["object", "null"]},
+    "next_action": {"type": "string"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"outcome": {"const": "handoff_ready"}}, "required": ["outcome"]},
+      "then": {
+        "properties": {
+          "commands": {
+            "minItems": 1,
+            "items": {
+              "allOf": [
+                {"$ref": "#/$defs/command"},
+                {"properties": {"exit_code": {"const": 0}}}
+              ]
+            }
+          },
+          "acceptance_results": {
+            "minItems": 1,
+            "items": {
+              "allOf": [
+                {"$ref": "#/$defs/acceptance"},
+                {"properties": {"status": {"const": "PASS"}, "evidence": {"minItems": 1}}}
+              ]
+            }
+          },
+          "blockers": {"maxItems": 0},
+          "design_delta": {"type": "null"}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "command": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["command", "exit_code"],
+      "properties": {"command": {"type": "string", "minLength": 1}, "exit_code": {"type": ["integer", "null"]}}
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+    },
+    "acceptance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["criterion", "status", "evidence"],
+      "properties": {
+        "criterion": {"type": "string", "minLength": 1},
+        "status": {"enum": ["PASS", "FAIL", "NOT_RUN"]},
+        "evidence": {"type": "array", "items": {"$ref": "#/$defs/artifact"}}
+      }
+    }
+  }
+}

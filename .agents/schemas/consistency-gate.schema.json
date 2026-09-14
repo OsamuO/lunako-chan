@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "consistency-gate.schema.json",
+  "title": "Consistency Gate Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "gate_id", "packet_id", "manifest_ref", "status", "checks", "actual_impact", "evidence", "unresolved"],
+  "properties": {
+    "schema_version": {"enum": [1, 2]},
+    "gate_id": {"type": "string", "pattern": "^CG-[0-9]{3}$"},
+    "packet_id": {"type": ["string", "null"], "pattern": "^WP-[0-9]{3}(?:-[A-Za-z0-9._-]+)?$"},
+    "manifest_ref": {"type": "string", "pattern": "^IM-[0-9]{3}@r[1-9][0-9]*$"},
+    "status": {"enum": ["PASS", "FAIL", "IMPACT_MISMATCH", "DESIGN_DELTA", "INCONCLUSIVE"]},
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "contracts", "spine_invariants", "ownership", "consumers", "integration_obligations", "acceptance"],
+      "properties": {
+        "scope": {"enum": ["PASS", "FAIL", "INCONCLUSIVE"]},
+        "contracts": {"enum": ["PASS", "FAIL", "INCONCLUSIVE"]},
+        "spine_invariants": {"enum": ["PASS", "FAIL", "INCONCLUSIVE"]},
+        "ownership": {"enum": ["PASS", "FAIL", "INCONCLUSIVE"]},
+        "consumers": {"enum": ["PASS", "FAIL", "INCONCLUSIVE"]},
+        "integration_obligations": {"enum": ["PASS", "FAIL", "INCONCLUSIVE"]},
+        "acceptance": {"enum": ["PASS", "FAIL", "INCONCLUSIVE"]}
+      }
+    },
+    "actual_impact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domains", "contracts", "consumers", "files", "spine_refs", "integration_obligations"],
+      "properties": {
+        "domains": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "contracts": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "consumers": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "files": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "spine_refs": {"type": "array", "items": {"type": "string", "pattern": "^[IOXGP]-[0-9]{3}$"}, "uniqueItems": true},
+        "integration_obligations": {"type": "array", "items": {"type": "string", "pattern": "^G-[0-9]{3}$"}, "uniqueItems": true}
+      }
+    },
+    "evidence": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "unresolved": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "required_action": {"type": ["string", "null"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"schema_version": {"const": 1}}, "required": ["schema_version"]},
+      "then": {"properties": {"packet_id": {"type": "string", "pattern": "^WP-[0-9]{3}(?:-[A-Za-z0-9._-]+)?$"}}}
+    }
+  ]
+}

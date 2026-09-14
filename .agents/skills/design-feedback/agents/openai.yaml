@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design Feedback"
+  short_description: "Return implementation/design mismatches as Design Delta"
+  default_prompt: "Use $design-feedback to record and route this design mismatch."

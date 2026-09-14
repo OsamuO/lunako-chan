@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "quality-evidence.schema.json",
+  "title": "Quality Evidence Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "evidence_id", "scope", "packet_id", "wave_id", "gate_id", "verification_level", "verdict", "reviewer_agent", "reviewer_model", "reviewed_commit", "contract_refs", "acceptance_results", "commands", "artifacts", "created_at"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "evidence_id": {"type": "string", "pattern": "^QE-[A-Z0-9-]+$"},
+    "scope": {"enum": ["packet", "wave", "architecture"]},
+    "packet_id": {"type": ["string", "null"]},
+    "wave_id": {"type": ["string", "null"]},
+    "gate_id": {"type": ["string", "null"]},
+    "verification_level": {"enum": ["direct", "independent-luna", "sol-audit", "architecture"]},
+    "verdict": {"enum": ["PASS", "FAIL", "INCONCLUSIVE"]},
+    "reviewer_agent": {"type": "string", "minLength": 1},
+    "reviewer_model": {"type": "string", "minLength": 1},
+    "reviewed_commit": {"type": ["string", "null"]},
+    "contract_refs": {"type": "array", "items": {"type": "string", "pattern": "^C-[0-9]{3}@v[1-9][0-9]*$"}, "uniqueItems": true},
+    "acceptance_results": {"type": "array", "items": {"$ref": "strict-agent-result.schema.json#/$defs/acceptance"}},
+    "commands": {"type": "array", "items": {"$ref": "strict-agent-result.schema.json#/$defs/command"}},
+    "artifacts": {"type": "array", "items": {"$ref": "strict-agent-result.schema.json#/$defs/artifact"}},
+    "created_at": {"type": "string", "format": "date-time"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"verdict": {"const": "PASS"}}, "required": ["verdict"]},
+      "then": {
+        "properties": {
+          "acceptance_results": {
+            "minItems": 1,
+            "items": {
+              "allOf": [
+                {"$ref": "strict-agent-result.schema.json#/$defs/acceptance"},
+                {"properties": {"status": {"const": "PASS"}, "evidence": {"minItems": 1}}}
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "verdict": {"const": "PASS"},
+          "scope": {"enum": ["packet", "wave"]}
+        },
+        "required": ["verdict", "scope"]
+      },
+      "then": {
+        "properties": {
+          "commands": {
+            "minItems": 1,
+            "items": {
+              "allOf": [
+                {"$ref": "strict-agent-result.schema.json#/$defs/command"},
+                {"properties": {"exit_code": {"const": 0}}}
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

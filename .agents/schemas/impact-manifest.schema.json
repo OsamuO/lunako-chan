@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "impact-manifest.schema.json",
+  "title": "Impact Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "manifest_id", "revision", "status", "packet_id", "change_intent", "expected_touches", "expected_consumers", "allowed_effects", "forbidden_effects", "integration_obligations", "verify_impact", "escalate_if", "candidate_review"],
+  "properties": {
+    "schema_version": {"enum": [1, 2]},
+    "manifest_id": {"type": "string", "pattern": "^IM-[0-9]{3}$"},
+    "revision": {"type": "integer", "minimum": 1},
+    "status": {"enum": ["draft", "approved", "verified", "impact-mismatch"]},
+    "packet_id": {"type": ["string", "null"], "pattern": "^WP-[0-9]{3}(?:-[A-Za-z0-9._-]+)?$"},
+    "change_intent": {"type": "string", "minLength": 1},
+    "expected_touches": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domains", "contracts", "spine_refs", "owned_paths"],
+      "properties": {
+        "domains": {"type": "array", "items": {"type": "string", "pattern": "^D-[A-Z0-9-]+$"}, "uniqueItems": true},
+        "contracts": {"type": "array", "items": {"type": "string", "pattern": "^C-[0-9]{3}@v[1-9][0-9]*$"}, "uniqueItems": true},
+        "spine_refs": {"type": "array", "items": {"type": "string", "pattern": "^[IOXGP]-[0-9]{3}$"}, "uniqueItems": true},
+        "owned_paths": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+      }
+    },
+    "expected_consumers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["direct", "transitive"],
+      "properties": {
+        "direct": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "transitive": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+      }
+    },
+    "allowed_effects": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "forbidden_effects": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "integration_obligations": {"type": "array", "items": {"type": "string", "pattern": "^G-[0-9]{3}$"}, "uniqueItems": true},
+    "verify_impact": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "escalate_if": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "candidate_review": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "candidate", "decision", "evidence"],
+        "properties": {
+          "kind": {"enum": ["domain", "contract", "consumer", "spine_ref", "obligation", "owned_path"]},
+          "candidate": {"type": "string", "minLength": 1},
+          "decision": {"enum": ["CONFIRM", "REMOVE", "ADD", "UNKNOWN"]},
+          "evidence": {"type": "string"}
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"schema_version": {"const": 1}}, "required": ["schema_version"]},
+      "then": {"properties": {"packet_id": {"type": "string", "pattern": "^WP-[0-9]{3}(?:-[A-Za-z0-9._-]+)?$"}}}
+    }
+  ]
+}

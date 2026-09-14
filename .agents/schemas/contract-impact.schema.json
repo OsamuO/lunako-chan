@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contract-impact.schema.json",
+  "title": "Contract Change Impact Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "impact_id", "created_at", "contract", "from_ref", "to_ref", "affected_domains", "packet_changes", "affected_waves", "applied"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "impact_id": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "contract": {"type": "string", "pattern": "^C-[0-9]{3}$"},
+    "from_ref": {"type": "string", "pattern": "^C-[0-9]{3}@v[1-9][0-9]*$"},
+    "to_ref": {"type": "string", "pattern": "^C-[0-9]{3}@v[1-9][0-9]*$"},
+    "affected_domains": {"type": "array", "items": {"type": "string", "pattern": "^D-[A-Z0-9-]+$"}, "uniqueItems": true},
+    "packet_changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["packet_id", "path", "previous_status", "recommended_status"],
+        "properties": {
+          "packet_id": {"type": "string"},
+          "path": {"type": "string"},
+          "previous_status": {"type": "string"},
+          "recommended_status": {"enum": ["needs-redesign", "needs-reverification"]}
+        }
+      }
+    },
+    "affected_waves": {"type": "array", "items": {"type": "string", "pattern": "^W-[0-9]{3}$"}, "uniqueItems": true},
+    "applied": {"type": "boolean"}
+  }
+}

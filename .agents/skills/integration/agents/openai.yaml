@@ -1,0 +1,4 @@
+interface:
+  display_name: "Integration"
+  short_description: "Verify composition-specific behavior across completed results"
+  default_prompt: "Use $integration to verify composition-specific behavior across these completed results."

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agent-result.schema.json",
+  "title": "Typed Agent Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "outcome",
+    "summary",
+    "touched_files",
+    "commands",
+    "artifacts",
+    "blockers",
+    "design_delta",
+    "next_action"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "outcome": {
+      "enum": [
+        "handoff_ready",
+        "needs_guidance",
+        "self_verify_failed",
+        "contract_mismatch",
+        "blocked",
+        "timeout",
+        "budget_exceeded"
+      ]
+    },
+    "summary": {"type": "string", "minLength": 1},
+    "touched_files": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "commands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["command", "exit_code"],
+        "properties": {
+          "command": {"type": "string"},
+          "exit_code": {"type": ["integer", "null"]}
+        }
+      }
+    },
+    "artifacts": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "blockers": {"type": "array", "items": {"type": "string"}},
+    "design_delta": {"type": ["object", "null"]},
+    "next_action": {"type": "string"}
+  }
+}

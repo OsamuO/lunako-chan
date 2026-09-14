@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "external-audit.schema.json",
+  "title": "External Audit Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "audit_id", "verdict", "auditor_agent", "auditor_model", "reviewed_commit", "blind_model", "findings", "reconciliation", "test_gaps", "residual_risk", "evidence_missing", "created_at"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "audit_id": {"type": "string", "pattern": "^EA-[A-Z0-9-]+$"},
+    "verdict": {"enum": ["PASS", "FAIL", "DESIGN_DELTA", "INCONCLUSIVE"]},
+    "auditor_agent": {"const": "sol_reviewer"},
+    "auditor_model": {"const": "gpt-5.6-sol"},
+    "reviewed_commit": {"type": ["string", "null"]},
+    "blind_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domains", "ownership", "contracts", "invariants"],
+      "properties": {
+        "domains": {"type": "array", "items": {"type": "string"}},
+        "ownership": {"type": "array", "items": {"type": "string"}},
+        "contracts": {"type": "array", "items": {"type": "string"}},
+        "invariants": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["severity", "summary", "evidence", "impact", "recommended_action"],
+        "properties": {
+          "severity": {"enum": ["critical", "major", "minor", "observation"]},
+          "summary": {"type": "string", "minLength": 1},
+          "evidence": {"type": "array", "items": {"type": "string"}},
+          "impact": {"type": "string"},
+          "recommended_action": {"type": "string"}
+        }
+      }
+    },
+    "reconciliation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["matches", "mismatches"],
+      "properties": {
+        "matches": {"type": "array", "items": {"type": "string"}},
+        "mismatches": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "test_gaps": {"type": "array", "items": {"type": "string"}},
+    "residual_risk": {"type": "array", "items": {"type": "string"}},
+    "evidence_missing": {"type": "array", "items": {"type": "string"}},
+    "created_at": {"type": "string", "format": "date-time"}
+  }
+}

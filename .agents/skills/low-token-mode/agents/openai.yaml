@@ -1,0 +1,4 @@
+interface:
+  display_name: "Low Token Mode"
+  short_description: "Sequential single-LUNA execution mode"
+  default_prompt: "Use $low-token-mode for sequential single-LUNA execution."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Task Decomposition"
+  short_description: "Shape work into the minimum useful LUNA execution units"
+  default_prompt: "Use $task-decomposition to shape this task into verifiable LUNA execution units only when splitting has clear benefit."

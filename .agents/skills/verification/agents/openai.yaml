@@ -1,0 +1,4 @@
+interface:
+  display_name: "Verification"
+  short_description: "Check completed work against implementation evidence"
+  default_prompt: "Use $verification for the required verification pass."

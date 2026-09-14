@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "domain-map.schema.json",
+  "title": "Project Domain Map",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "domains"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "domains": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "purpose", "owner", "owned_paths", "provides", "consumes", "status"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^D-[A-Z0-9-]+$"},
+          "name": {"type": "string", "minLength": 1},
+          "purpose": {"type": "string", "minLength": 1},
+          "owner": {"type": "string", "minLength": 1},
+          "owned_paths": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "provides": {"type": "array", "items": {"type": "string", "pattern": "^C-[0-9]{3}@v[1-9][0-9]*$"}, "uniqueItems": true},
+          "consumes": {"type": "array", "items": {"type": "string", "pattern": "^C-[0-9]{3}@v[1-9][0-9]*$"}, "uniqueItems": true},
+          "status": {"enum": ["proposed", "active", "retired"]}
+        }
+      }
+    }
+  }
+}

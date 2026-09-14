@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "integration-waves.schema.json",
+  "title": "Integration Wave Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "plan_id", "topology", "waves"],
+  "properties": {
+    "schema_version": {"enum": [2, 3]},
+    "plan_id": {"type": "string", "minLength": 1},
+    "topology": {"enum": ["single", "packetized", "hierarchical"]},
+    "waves": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "status", "domains", "packets", "depends_on", "acceptance", "verify", "evidence_mode", "architecture_gate_id", "packet_evidence_ids", "integration_evidence_id"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^W-[0-9]{3}$"},
+          "name": {"type": "string", "minLength": 1},
+          "status": {"enum": ["planned", "ready", "running", "blocked", "verified", "integrated"]},
+          "domains": {"type": "array", "items": {"type": "string", "pattern": "^D-[A-Z0-9-]+$"}, "uniqueItems": true},
+          "packets": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "depends_on": {"type": "array", "items": {"type": "string", "pattern": "^W-[0-9]{3}$"}, "uniqueItems": true},
+          "acceptance": {"type": "array", "items": {"type": "string"}},
+          "verify": {"type": "array", "items": {"type": "string"}},
+          "evidence_mode": {"enum": ["legacy", "strict"]},
+          "architecture_gate_id": {"type": ["string", "null"], "pattern": "^AG-[0-9]{3}$"},
+          "packet_evidence_ids": {"type": "array", "items": {"type": "string", "pattern": "^QE-[A-Z0-9-]+$"}, "uniqueItems": true},
+          "integration_evidence_id": {"type": ["string", "null"], "pattern": "^QE-[A-Z0-9-]+$"}
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"schema_version": {"const": 2}}, "required": ["schema_version"]},
+      "then": {"properties": {"topology": {"enum": ["packetized", "hierarchical"]}}}
+    }
+  ]
+}

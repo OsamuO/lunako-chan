@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "context-capsule.schema.json",
+  "title": "LUNA Active Context Capsule",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "capsule_id",
+    "updated_at",
+    "goal",
+    "packet_id",
+    "domain_id",
+    "wave_id",
+    "contract_refs",
+    "owned_paths",
+    "acceptance",
+    "verify",
+    "dependency_artifacts",
+    "last_failure",
+    "next_action"
+  ],
+  "properties": {
+    "schema_version": {"const": 2},
+    "capsule_id": {"type": "string", "minLength": 1},
+    "updated_at": {"type": "string", "format": "date-time"},
+    "goal": {"type": "string"},
+    "packet_id": {"type": ["string", "null"]},
+    "domain_id": {"type": ["string", "null"], "pattern": "^D-[A-Z0-9-]+$"},
+    "wave_id": {"type": ["string", "null"], "pattern": "^W-[0-9]{3}$"},
+    "contract_refs": {"type": "array", "items": {"type": "string", "pattern": "^C-[0-9]{3}@v[1-9][0-9]*$"}, "uniqueItems": true},
+    "owned_paths": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "acceptance": {"type": "array", "items": {"type": "string"}},
+    "verify": {"type": "array", "items": {"type": "string"}},
+    "dependency_artifacts": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "last_failure": {"type": ["object", "null"]},
+    "next_action": {"type": "string"}
+  }
+}

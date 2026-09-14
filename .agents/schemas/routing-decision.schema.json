@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "routing-decision.schema.json",
+  "title": "Harness Routing Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "task_size", "harness_profile", "lifecycle", "topology", "coordination", "risk", "verification_level", "requires_architecture_gate", "worker_count", "artifact_policy", "scores", "reasons"],
+  "properties": {
+    "schema_version": {"enum": [3, 4, 5]},
+    "task_size": {"enum": ["small", "medium", "large"]},
+    "harness_profile": {"enum": ["direct", "compact", "full"]},
+    "lifecycle": {"enum": ["bootstrap", "improvement"]},
+    "topology": {"enum": ["single", "packetized", "hierarchical"]},
+    "coordination": {"enum": ["sequential", "centralized", "fanout"]},
+    "architecture_uncertainty": {"enum": ["low", "medium", "high"]},
+    "architecture_escalation": {"enum": ["not-needed", "deferred", "selected", "not-selected"]},
+    "risk": {"enum": ["low", "medium", "high"]},
+    "verification_level": {"enum": ["direct", "independent-luna", "sol-audit"]},
+    "decision_review": {"enum": ["not-needed", "recommended", "required"]},
+    "decision_review_executor": {"enum": [null, "sol_decision_reviewer"]},
+    "external_audit": {"enum": ["not-needed", "recommended", "required"]},
+    "explicit_audit_request": {"type": "boolean"},
+    "sol_escalation": {"enum": ["not-needed", "recommended", "selected", "not-selected"]},
+    "requires_architecture_gate": {"type": "boolean"},
+    "worker_count": {"type": "integer", "minimum": 0, "maximum": 3, "description": "Structural Worker capacity/envelope from Structure; not the actual Worker activation or handoff count."},
+    "artifact_policy": {"$ref": "#/$defs/artifactPolicy"},
+    "scores": {
+      "oneOf": [
+        {"$ref": "#/$defs/legacyScores"},
+        {"$ref": "#/$defs/v5Scores"}
+      ]
+    },
+    "reasons": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "score": {"type": "integer", "minimum": 0, "maximum": 3},
+    "artifactPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["context_capsule", "work_packet", "typed_result", "quality_evidence", "run_ledger", "domain_map", "dependency_graph", "integration_wave"],
+      "properties": {
+        "context_capsule": {"enum": ["never", "on-handoff", "required"], "description": "Current v5 runtime uses never/on-handoff; required remains for legacy compatibility. on-handoff includes deliberate context isolation."},
+        "work_packet": {"enum": ["never", "need-based", "required"], "description": "Current v5 runtime uses never for direct and need-based for compact/full. required remains for legacy compatibility."},
+        "typed_result": {"enum": ["never", "on-handoff", "required"], "description": "Formal handoff/independent execution boundary policy; full alone does not require it."},
+        "quality_evidence": {"enum": ["never", "on-risk", "required"], "description": "Assurance evidence policy. Current v5 runtime requires it for independent-luna verification or an Architecture Gate; on-risk remains for legacy compatibility."},
+        "run_ledger": {"enum": ["never", "on-handoff", "required"], "description": "Formal handoff/retry/run-accounting boundary policy; full alone does not require it."},
+        "domain_map": {"enum": ["never", "required"], "description": "Semantic-structure policy, independent of coordination activation."},
+        "dependency_graph": {"enum": ["never", "required"], "description": "Semantic-structure policy, independent of coordination activation."},
+        "integration_wave": {"enum": ["never", "need-based", "required"], "description": "Current v5 runtime uses never for direct and need-based for compact/full; activation remains ordering/barrier/staged-integration only. required remains for legacy compatibility."}
+      }
+    },
+    "legacyScores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["independence", "sequentiality", "shared_context", "tool_density", "system_size", "cross_domain_impact", "contract_instability", "test_gap", "irreversibility"],
+      "properties": {
+        "independence": {"$ref": "#/$defs/score"},
+        "sequentiality": {"$ref": "#/$defs/score"},
+        "shared_context": {"$ref": "#/$defs/score"},
+        "tool_density": {"$ref": "#/$defs/score"},
+        "system_size": {"$ref": "#/$defs/score"},
+        "cross_domain_impact": {"$ref": "#/$defs/score"},
+        "contract_instability": {"$ref": "#/$defs/score"},
+        "test_gap": {"$ref": "#/$defs/score"},
+        "irreversibility": {"$ref": "#/$defs/score"}
+      }
+    },
+    "v5Scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dimensions"],
+      "properties": {
+        "dimensions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["structure", "uncertainty", "risk"],
+          "properties": {
+            "structure": {"$ref": "#/$defs/structureSignals"},
+            "uncertainty": {"$ref": "#/$defs/uncertaintySignals"},
+            "risk": {"$ref": "#/$defs/riskSignals"}
+          }
+        }
+      }
+    },
+    "structureSignals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system_size", "cross_domain_coupling", "independence", "sequentiality", "shared_context", "tool_density"],
+      "properties": {
+        "system_size": {"$ref": "#/$defs/score"},
+        "cross_domain_coupling": {"$ref": "#/$defs/score"},
+        "independence": {"$ref": "#/$defs/score"},
+        "sequentiality": {"$ref": "#/$defs/score"},
+        "shared_context": {"$ref": "#/$defs/score"},
+        "tool_density": {"$ref": "#/$defs/score"}
+      }
+    },
+    "uncertaintySignals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requirement_ambiguity", "architecture_branching", "ownership_ambiguity", "contract_ambiguity", "external_system_complexity", "unresolved_design"],
+      "properties": {
+        "requirement_ambiguity": {"$ref": "#/$defs/score"},
+        "architecture_branching": {"$ref": "#/$defs/score"},
+        "ownership_ambiguity": {"$ref": "#/$defs/score"},
+        "contract_ambiguity": {"$ref": "#/$defs/score"},
+        "external_system_complexity": {"$ref": "#/$defs/score"},
+        "unresolved_design": {"$ref": "#/$defs/score"}
+      }
+    },
+    "riskSignals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["security_authorization", "irreversibility", "migration_compatibility", "financial_impact", "public_api_compatibility", "test_gap"],
+      "properties": {
+        "security_authorization": {"$ref": "#/$defs/score"},
+        "irreversibility": {"$ref": "#/$defs/score"},
+        "migration_compatibility": {"$ref": "#/$defs/score"},
+        "financial_impact": {"$ref": "#/$defs/score"},
+        "public_api_compatibility": {"$ref": "#/$defs/score"},
+        "test_gap": {"$ref": "#/$defs/score"},
+        "milestone_criticality": {"$ref": "#/$defs/score"},
+        "shared_assumption_risk": {"$ref": "#/$defs/score"}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"schema_version": {"enum": [3, 4]}}, "required": ["schema_version"]},
+      "then": {
+        "required": ["sol_escalation"],
+        "properties": {"scores": {"$ref": "#/$defs/legacyScores"}}
+      }
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": 4}}, "required": ["schema_version"]},
+      "then": {
+        "required": ["external_audit"],
+        "properties": {"verification_level": {"enum": ["direct", "independent-luna"]}}
+      }
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": 5}}, "required": ["schema_version"]},
+      "then": {
+        "required": ["architecture_uncertainty", "architecture_escalation", "decision_review", "external_audit"],
+        "properties": {
+          "verification_level": {"enum": ["direct", "independent-luna"]},
+          "scores": {"$ref": "#/$defs/v5Scores"}
+        },
+        "not": {"required": ["sol_escalation"]}
+      }
+    }
+  ]
+}

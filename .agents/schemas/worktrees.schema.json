@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "worktrees.schema.json",
+  "title": "Harness Worktree Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "worktrees"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "worktrees": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["packet_id", "path", "branch", "base_commit", "result_commit", "status"],
+        "properties": {
+          "packet_id": {"type": "string"},
+          "path": {"type": "string"},
+          "branch": {"type": "string"},
+          "base_commit": {"type": "string"},
+          "result_commit": {"type": ["string", "null"]},
+          "status": {"enum": ["prepared", "running", "review", "integrated", "abandoned"]}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "bundle_name": "lunatic-harnes-runtime",
+  "bundle_version": "1",
+  "membership_policy": "explicit-positive",
+  "source_policy": {
+    "development_project_state_included": false,
+    "evaluation_assets_included": false,
+    "internal_release_state_included": false,
+    "global_codex_configuration_required": false
+  },
+  "file_mappings": [
+    {
+      "source": ".agents/project-interface/SPECIFICATION.md",
+      "target": ".agents/project-interface/SPECIFICATION.md"
+    },
+    {
+      "source": ".agents/schemas/agent-result.schema.json",
+      "target": ".agents/schemas/agent-result.schema.json"
+    },
+    {
+      "source": ".agents/schemas/architecture-gates.schema.json",
+      "target": ".agents/schemas/architecture-gates.schema.json"
+    },
+    {
+      "source": ".agents/schemas/consistency-gate.schema.json",
+      "target": ".agents/schemas/consistency-gate.schema.json"
+    },
+    {
+      "source": ".agents/schemas/context-capsule.schema.json",
+      "target": ".agents/schemas/context-capsule.schema.json"
+    },
+    {
+      "source": ".agents/schemas/contract-impact.schema.json",
+      "target": ".agents/schemas/contract-impact.schema.json"
+    },
+    {
+      "source": ".agents/schemas/dependency-graph.schema.json",
+      "target": ".agents/schemas/dependency-graph.schema.json"
+    },
+    {
+      "source": ".agents/schemas/domain-map.schema.json",
+      "target": ".agents/schemas/domain-map.schema.json"
+    },
+    {
+      "source": ".agents/schemas/external-audit.schema.json",
+      "target": ".agents/schemas/external-audit.schema.json"
+    },
+    {
+      "source": ".agents/schemas/impact-manifest.schema.json",
+      "target": ".agents/schemas/impact-manifest.schema.json"
+    },
+    {
+      "source": ".agents/schemas/integration-waves.schema.json",
+      "target": ".agents/schemas/integration-waves.schema.json"
+    },
+    {
+      "source": ".agents/schemas/packet-states.schema.json",
+      "target": ".agents/schemas/packet-states.schema.json"
+    },
+    {
+      "source": ".agents/schemas/quality-evidence.schema.json",
+      "target": ".agents/schemas/quality-evidence.schema.json"
+    },
+    {
+      "source": ".agents/schemas/routing-decision.schema.json",
+      "target": ".agents/schemas/routing-decision.schema.json"
+    },
+    {
+      "source": ".agents/schemas/run-record.schema.json",
+      "target": ".agents/schemas/run-record.schema.json"
+    },
+    {
+      "source": ".agents/schemas/strict-agent-result.schema.json",
+      "target": ".agents/schemas/strict-agent-result.schema.json"
+    },
+    {
+      "source": ".agents/schemas/strict-run-record.schema.json",
+      "target": ".agents/schemas/strict-run-record.schema.json"
+    },
+    {
+      "source": ".agents/schemas/worktrees.schema.json",
+      "target": ".agents/schemas/worktrees.schema.json"
+    },
+    {
+      "source": ".agents/skills/design-feedback/SKILL.md",
+      "target": ".agents/skills/design-feedback/SKILL.md"
+    },
+    {
+      "source": ".agents/skills/design-feedback/agents/openai.yaml",
+      "target": ".agents/skills/design-feedback/agents/openai.yaml"
+    },
+    {
+      "source": ".agents/skills/external-audit/SKILL.md",
+      "target": ".agents/skills/external-audit/SKILL.md"
+    },
+    {
+      "source": ".agents/skills/integration/SKILL.md",
+      "target": ".agents/skills/integration/SKILL.md"
+    },
+    {
+      "source": ".agents/skills/integration/agents/openai.yaml",
+      "target": ".agents/skills/integration/agents/openai.yaml"
+    },
+    {
+      "source": ".agents/skills/low-token-mode/SKILL.md",
+      "target": ".agents/skills/low-token-mode/SKILL.md"
+    },
+    {
+      "source": ".agents/skills/low-token-mode/agents/openai.yaml",
+      "target": ".agents/skills/low-token-mode/agents/openai.yaml"
+    },
+    {
+      "source": ".agents/skills/luna-harness/SKILL.md",
+      "target": ".agents/skills/luna-harness/SKILL.md"
+    },
+    {
+      "source": ".agents/skills/luna-harness/agents/openai.yaml",
+      "target": ".agents/skills/luna-harness/agents/openai.yaml"
+    },
+    {
+      "source": ".agents/skills/luna-harness/references/runtime-contracts.md",
+      "target": ".agents/skills/luna-harness/references/runtime-contracts.md"
+    },
+    {
+      "source": ".agents/skills/model-escalation/SKILL.md",
+      "target": ".agents/skills/model-escalation/SKILL.md"
+    },
+    {
+      "source": ".agents/skills/model-escalation/agents/openai.yaml",
+      "target": ".agents/skills/model-escalation/agents/openai.yaml"
+    },
+    {
+      "source": ".agents/skills/task-decomposition/SKILL.md",
+      "target": ".agents/skills/task-decomposition/SKILL.md"
+    },
+    {
+      "source": ".agents/skills/task-decomposition/agents/openai.yaml",
+      "target": ".agents/skills/task-decomposition/agents/openai.yaml"
+    },
+    {
+      "source": ".agents/skills/verification/SKILL.md",
+      "target": ".agents/skills/verification/SKILL.md"
+    },
+    {
+      "source": ".agents/skills/verification/agents/openai.yaml",
+      "target": ".agents/skills/verification/agents/openai.yaml"
+    },
+    {
+      "source": ".agents/skills/work-packet/SKILL.md",
+      "target": ".agents/skills/work-packet/SKILL.md"
+    },
+    {
+      "source": ".agents/skills/work-packet/agents/openai.yaml",
+      "target": ".agents/skills/work-packet/agents/openai.yaml"
+    },
+    {
+      "source": ".codex/agents/luna-decomposer.toml",
+      "target": ".codex/agents/luna-decomposer.toml"
+    },
+    {
+      "source": ".codex/agents/luna-integrator.toml",
+      "target": ".codex/agents/luna-integrator.toml"
+    },
+    {
+      "source": ".codex/agents/luna-planner.toml",
+      "target": ".codex/agents/luna-planner.toml"
+    },
+    {
+      "source": ".codex/agents/luna-verifier.toml",
+      "target": ".codex/agents/luna-verifier.toml"
+    },
+    {
+      "source": ".codex/agents/luna-worker.toml",
+      "target": ".codex/agents/luna-worker.toml"
+    },
+    {
+      "source": ".codex/agents/sol-architect.toml",
+      "target": ".codex/agents/sol-architect.toml"
+    },
+    {
+      "source": ".codex/agents/sol-decision-reviewer.toml",
+      "target": ".codex/agents/sol-decision-reviewer.toml"
+    },
+    {
+      "source": ".codex/agents/sol-reviewer.toml",
+      "target": ".codex/agents/sol-reviewer.toml"
+    },
+    {
+      "source": "scripts/check_assurance_done_gate.py",
+      "target": "scripts/check_assurance_done_gate.py"
+    },
+    {
+      "source": "scripts/check_impact_closure.py",
+      "target": "scripts/check_impact_closure.py"
+    },
+    {
+      "source": "scripts/lunatic_permission_profile.py",
+      "target": "scripts/lunatic_permission_profile.py"
+    },
+    {
+      "source": "scripts/project_interface_reconciliation.py",
+      "target": "scripts/project_interface_reconciliation.py"
+    },
+    {
+      "source": "scripts/project_interface_resolver.py",
+      "target": "scripts/project_interface_resolver.py"
+    }
+  ],
+  "forbidden_source_prefixes": [
+    ".agents/evals/",
+    ".agents/release/",
+    ".luna-runtime/evals/",
+    ".agents/project-state/",
+    ".agents/work-packets/"
+  ],
+  "root_agents_binding": {
+    "begin_marker": "<!-- LUNATIC-HARNES:BEGIN -->",
+    "end_marker": "<!-- LUNATIC-HARNES:END -->",
+    "skill_path": ".agents/skills/luna-harness/SKILL.md"
+  },
+  "install_manifest_path": ".lunatic-harnes/install-manifest.json"
+}

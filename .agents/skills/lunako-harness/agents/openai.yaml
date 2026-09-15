@@ -1,0 +1,4 @@
+interface:
+  display_name: "LUNAKO Harness"
+  short_description: "Shape tasks and activate only need-based coordination for LUNA execution"
+  default_prompt: "Use $lunako-harness to shape the task, activate coordination only for the failure mode it prevents, and selectively escalate architecture/model capability only for unresolved architecture uncertainty."

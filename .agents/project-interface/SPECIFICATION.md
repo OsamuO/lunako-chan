@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The Project Interface defines how a project presents task-relevant information to LUNATIC HARNES through six semantic roles:
+The Project Interface defines how a project presents task-relevant information to LUNAKO Harness through six semantic roles:
 
 ```text
 Rules

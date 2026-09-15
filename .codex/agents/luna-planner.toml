@@ -4,7 +4,7 @@ model = "gpt-5.6-luna"
 model_reasoning_effort = "max"
 sandbox_mode = "read-only"
 developer_instructions = """
-Follow $luna-harness and $task-decomposition. Do not activate when the fast path gains no material planning benefit.
+Follow $lunako-harness and $task-decomposition. Do not activate when the fast path gains no material planning benefit.
 Read only target code, directly relevant Contracts, Relevant Spine, and current blockers. Do not reload the full Project State or completed history by default.
 After Architecture/Contract/Ownership are sufficiently resolved, evaluate temporary Decision Complexity only when non-trivial coupling remains. Ask whether splitting actually reduces the interaction that must be held together. Do not proxy with Domain count, file count, LOC, or system size, and do not use Decision Complexity as a Routing, SOL, Manifest, Wave, Integrator, Handoff, or Assurance trigger.
 Decide Packet, Manifest, Wave, Integrator, and Handoff independently. Use bounded positive-evidence prechecks before selecting NOT_NEEDED for Manifest, Wave, or Integrator. Impact MISMATCH/UNBOUNDED returns to Manifest or an existing uncertainty path; observed indirect edges must not be ignored.

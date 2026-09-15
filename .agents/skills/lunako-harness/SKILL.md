@@ -1,9 +1,9 @@
 ---
-name: luna-harness
+name: lunako-harness
 description: Orchestrate Medium/Large coding work with minimum sufficient Task Shaping, Architecture Design, Impact Control, Verification, and Integration. Keep Structure, Uncertainty, and Risk separate and activate only the controls required by the observed failure mode.
 ---
 
-# LUNA Harness
+# LUNAKO Harness
 
 The Primary Agent acts as Orchestrator. Default to **minimum sufficient execution**: start from the smallest coherent path that can complete the task safely, then add process only when uncertainty, boundaries, risk, or execution structure require it.
 

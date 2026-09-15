@@ -1,109 +1,95 @@
 # Minimal Project Example
 
-This example shows the public lifecycle and authority boundary without pretending to be an application benchmark or evaluation fixture.
+This disposable example shows the LUNAKO Harness lifecycle and ownership boundary without pretending to be an application benchmark.
 
-The directory starts as an ordinary project with its own `AGENTS.md`. Lunatic Harnes should add one managed binding block while preserving those project-owned rules, report a clean installation, and remove its managed material cleanly on uninstall.
+The directory starts as an ordinary project with its own `AGENTS.md`. LUNAKO Harness adds one managed binding block while preserving those project-owned rules, reports the canonical installation state, and removes its attributed material on uninstall.
 
 ## 1. Inspect the project-owned rules
-
-Read the example's existing `AGENTS.md` first. It belongs to the project, not to Lunatic Harnes.
 
 ```bash
 cat examples/minimal-project/AGENTS.md
 ```
 
-The important idea is that installation should not replace or reinterpret those existing rules.
+Those rules belong to the project, not to LUNAKO Harness.
 
 ## 2. Make a disposable Git target
 
-From the Lunatic Harnes checkout, copy the example somewhere outside the source repository and initialize it as an ordinary Git repository:
+From the LUNAKO Harness checkout:
 
 ```bash
-cp -R examples/minimal-project /tmp/lunatic-minimal-project
-cd /tmp/lunatic-minimal-project
+cp -R examples/minimal-project /tmp/lunako-minimal-project
+cd /tmp/lunako-minimal-project
 git init
 ```
 
-The target passed to `lunatic.py` must be the root of a Git repository. No additional Harness-specific Project State file is required.
+The target passed to `lunako.py` must be the root of a Git repository.
 
-Return to the Lunatic Harnes checkout before running the installer:
+Return to the LUNAKO Harness checkout:
 
 ```bash
-cd /path/to/lunatic-harnes
+cd /path/to/lunako-chan
 ```
 
 ## 3. Install
 
 ```bash
-python3 scripts/lunatic.py init /tmp/lunatic-minimal-project
+python3 scripts/lunako.py init /tmp/lunako-minimal-project
 ```
 
-After installation, inspect the target:
-
-```bash
-cat /tmp/lunatic-minimal-project/AGENTS.md
-```
-
-You should still see the original `# Minimal Project Rules` content, plus exactly one managed block delimited by:
+The original `# Minimal Project Rules` content remains, with exactly one managed AGENTS block delimited by:
 
 ```text
-<!-- LUNATIC-HARNES:BEGIN -->
+<!-- LUNAKO-HARNESS:BEGIN -->
 ...
-<!-- LUNATIC-HARNES:END -->
+<!-- LUNAKO-HARNESS:END -->
 ```
 
-The runtime files installed by Lunatic Harnes are tracked in:
+The canonical ownership manifest is:
 
 ```text
-/tmp/lunatic-minimal-project/.lunatic-harnes/install-manifest.json
+/tmp/lunako-minimal-project/.lunako-harness/install-manifest.json
+```
+
+and the canonical Harness skill is installed under:
+
+```text
+.agents/skills/lunako-harness/
 ```
 
 ## 4. Check status
 
 ```bash
-python3 scripts/lunatic.py status /tmp/lunatic-minimal-project
+python3 scripts/lunako.py status /tmp/lunako-minimal-project
 ```
 
-For an unchanged installation, status should report a clean managed installation.
+For an unchanged canonical installation, status reports `CANONICAL` with a clean status.
 
 ## 5. What happens on non-trivial coding work?
 
-The managed `AGENTS.md` block tells the coding agent to read:
+The managed AGENTS block directs the coding agent to the LUNAKO Harness skill before non-trivial implementation, architecture, migration, or cross-boundary work.
 
-```text
-.agents/skills/luna-harness/SKILL.md
-```
-
-before non-trivial implementation, architecture, migration, or cross-boundary work.
-
-Conceptually, the installed Harness then keeps several concerns separate:
+The Harness keeps concerns separate:
 
 - shape the execution unit from the task and project authority;
 - treat unresolved architecture uncertainty separately from task size;
-- activate Work Packet / Impact Manifest / Integration Wave / Integrator / Handoff only when their specific failure modes are present;
+- activate coordination only when its specific failure mode is present;
 - reason about actual impact rather than equating risk with impact discovery;
-- perform the verification and assurance required by the selected obligations.
-
-The example does not simulate a fake complex application just to trigger those mechanisms. It exists to make installation, project-rule preservation, and the execution-policy boundary visible.
+- perform the verification and assurance required by selected obligations.
 
 ## 6. Optional sync
 
-If the Lunatic Harnes source checkout remains clean, you can synchronize the target to the runtime bytes in that checkout:
-
 ```bash
-python3 scripts/lunatic.py sync /tmp/lunatic-minimal-project
+python3 scripts/lunako.py sync /tmp/lunako-minimal-project
 ```
 
-`sync` does not fetch from GitHub. It synchronizes from the current local Lunatic Harnes source checkout.
+`sync` uses the runtime bytes in the current clean LUNAKO Harness source checkout. It does not fetch from GitHub automatically.
 
 ## 7. Uninstall
 
 ```bash
-python3 scripts/lunatic.py uninstall /tmp/lunatic-minimal-project
+python3 scripts/lunako.py uninstall /tmp/lunako-minimal-project
 ```
 
-For a clean installation, Lunatic Harnes removes its managed runtime files, install manifest, and managed `AGENTS.md` block. The original project-owned `AGENTS.md` content remains.
+For the tested canonical lifecycle, LUNAKO removes its managed runtime files, install manifest, AGENTS block, and managed project role-registration region while restoring the tested project-owned bytes.
 
-The standalone package validation verifies byte-for-byte restoration of the tested ordinary-target baseline after this lifecycle.
-
-For the tested scope of that claim, see [`../../docs/VALIDATION.md`](../../docs/VALIDATION.md).
+Complete filesystem metadata preservation is not claimed. See [`../../docs/VALIDATION.md`](../../docs/VALIDATION.md) for the tested boundary.

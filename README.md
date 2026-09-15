@@ -1,18 +1,31 @@
-# LUNATIC HARNES
+# LUNAKO Harness
 
 **Shape the task before you scale the model.**
 
-> **Status: Beta (`v0.1.0-beta.1`)**
+> **Status: Beta / unreleased main-line distribution candidate**
 >
-> LUNATIC HARNES is a public beta. Interfaces, execution policy, and supported model bindings may change before a stable release.
+> This documentation describes the validated LUNAKO Harness distribution candidate. It is not a claim that a new tag or GitHub Release has been published.
 
-[Japanese README](README.ja.md)
+[日本語](README.ja.md)
 
 ## What it is
 
-LUNATIC HARNES is a **Codex-oriented coding-agent harness** for structuring software-engineering work before increasing model capability or orchestration complexity.
+LUNAKO Harness is an **agent harness for OpenAI Codex**. It helps a **coding agent** by reshaping a problem into a form the current model can solve, then activating only the support the task needs.
 
-Its normal path uses LUNA. Stronger-model escalation is reserved for unresolved architectural uncertainty or a specifically selected review/audit role rather than being triggered by task size alone.
+The current implementation uses **GPT-5.6 Luna** for normal execution and **GPT-5.6 Sol** selectively for architecture escalation and review. Its core approach is **Task Shaping** plus **selective escalation**: rather than scaling model capability, context, agents, and process by default, LUNAKO shapes the work first and adds stronger assistance only when the task justifies it.
+
+Current Luna/Sol bindings describe the present implementation, not the long-term product boundary. LUNAKO Harness is defined more broadly by shaping problems into model-solvable forms and selecting only the necessary support. It is not defined as a Luna-only product, a low-cost-model harness, or a general-purpose multi-agent framework.
+
+It keeps several concerns separate instead of treating every difficult task as the same problem:
+
+- **Task Shaping** selects a coherent execution shape for the work.
+- **Selective escalation** uses stronger architecture/review roles only when the corresponding uncertainty or assurance need exists.
+- **Assurance and verification** are selected from actual obligations and risk rather than task size alone.
+- **Explicit ownership** records the files and managed regions owned by the installation.
+- **Safe lifecycle operations** provide deterministic `init`, `status`, `sync`, `migrate`, and `uninstall` behavior for the tested states.
+- **Legacy migration** supports only the explicitly enumerated historical Beta installation shapes validated by the project.
+
+Core operating principles:
 
 ```text
 Structure determines execution shape.
@@ -21,99 +34,82 @@ Risk determines assurance.
 Risk determines assurance, not impact discovery.
 ```
 
-## Why use it
+The target repository remains the authority for its own rules, task, source code, acceptance criteria, and project-owned content. LUNAKO Harness adds a managed execution-policy layer around that authority.
 
-Coding-agent workflows often react to difficult work by adding more context, more agents, more process, or a stronger model. Those interventions address different failure modes.
+## Current implementation boundary
 
-LUNATIC HARNES separates them and activates only the mechanisms that are useful for the current task.
+The current distribution targets OpenAI Codex. Its packaged role definitions currently bind normal execution to GPT-5.6 Luna and selected architecture/review roles to GPT-5.6 Sol; provider/model abstraction is not claimed. Those bindings describe the current implementation rather than defining what LUNAKO Harness must remain in future versions.
 
-It is a good fit when you want to:
-
-- shape a non-trivial coding task before escalating model capability;
-- keep a lighter model on the normal execution path when the work can be made tractable through structure;
-- escalate architecture selectively when meaningful uncertainty remains unresolved;
-- avoid automatically turning a large task into a large multi-agent workflow;
-- preserve the target repository's own rules, source authority, and acceptance criteria;
-- make verification and completion obligations explicit when the task requires them.
-
-## How it works
-
-The Harness applies **minimum sufficient execution** and **Need-Based Activation**.
-
-- **Task Shaping** keeps work in the largest coherent execution unit that can be handled safely.
-- **Architecture Escalation** is driven by unresolved architecture uncertainty, not size alone.
-- **Work Packet**, **Impact Manifest**, **Integration Wave**, **Integrator**, and **Handoff** are independent controls. One does not automatically activate the others.
-- **Impact Discovery** determines what a change may affect and remains separate from Risk.
-- **Verification and Assurance** scale with the obligations selected for the task.
-- **Challenge** provides a bounded pre-edit check when a concrete implementation plan still depends on a material assumption.
-- **Completion checks** close the controls that were actually selected.
-
-The target project remains the authority for its own Rules, Task, State, Acceptance, Sources, and Deliverables. LUNATIC HARNES provides execution policy around that project-native information.
-
-## Current support
-
-The current beta is **Codex-oriented** and uses concrete agent bindings:
-
-- `gpt-5.6-luna` for normal LUNA roles;
-- `gpt-5.6-sol` for selected SOL roles.
-
-Provider/model abstraction is not part of this beta. The package is defined by an explicit runtime inventory and is self-contained for the supported install lifecycle.
-
-For the package and lifecycle behavior that has been directly tested, see [`docs/VALIDATION.md`](docs/VALIDATION.md).
+The lifecycle and compatibility claims are intentionally bounded. See [`docs/VALIDATION.md`](docs/VALIDATION.md) for the tested scope and [`docs/MIGRATION.md`](docs/MIGRATION.md) for supported legacy migration.
 
 ## Quick Start
 
 Prerequisites:
 
-- Git;
-- Python 3;
-- a clean LUNATIC HARNES source checkout for `init` and `sync`;
-- a target path that is the root of a Git repository.
+- Git
+- Python 3
+- a clean LUNAKO Harness source checkout
+- a target path that is the root of a Git repository
 
-Clone and validate the package:
+Clone the public repository and validate the standalone package:
 
 ```bash
-git clone https://github.com/OsamuO/lunatic-harnes.git
-cd lunatic-harnes
+git clone https://github.com/OsamuO/lunako-chan.git
+cd lunako-chan
 python3 scripts/validate_public_release.py
 ```
 
-Install it into a Git project:
+Install into a Git project:
 
 ```bash
-python3 scripts/lunatic.py init /path/to/your/project
-python3 scripts/lunatic.py status /path/to/your/project
+python3 scripts/lunako.py init /path/to/your/project
+python3 scripts/lunako.py status /path/to/your/project
 ```
 
-`init` installs the managed runtime and records it in:
+A canonical installation records ownership in:
 
 ```text
-.lunatic-harnes/install-manifest.json
+.lunako-harness/install-manifest.json
 ```
 
-If the target already has an `AGENTS.md`, LUNATIC HARNES preserves the project-owned content and adds one managed binding block.
+and binds the Harness through:
+
+```text
+.agents/skills/lunako-harness/
+```
+
+Existing project-owned `AGENTS.md` and `.codex/config.toml` content is preserved on the tested byte-preservation surface while LUNAKO-managed regions are present.
 
 ### Sync
 
 ```bash
-python3 scripts/lunatic.py sync /path/to/your/project
+python3 scripts/lunako.py sync /path/to/your/project
 ```
 
-`sync` synchronizes the target with the runtime files in the **current clean LUNATIC HARNES source checkout**. It does not pull or update from GitHub automatically. Update the source checkout first when newer source bytes are intended.
+`sync` uses runtime files from the current clean LUNAKO Harness source checkout. It does not fetch updates from GitHub automatically.
 
-### Remove
+### Migrate a supported legacy installation
 
 ```bash
-python3 scripts/lunatic.py uninstall /path/to/your/project
+python3 scripts/lunako.py status /path/to/your/project
+python3 scripts/lunako.py migrate /path/to/your/project
 ```
 
-For a clean installation, `uninstall` removes the managed runtime files, install manifest, and managed `AGENTS.md` block while preserving the project's original content.
+Migration is available only for the enumerated frozen legacy installation shapes. Drifted, mixed, or unsupported old installations fail closed as `CONFLICT`; LUNAKO does not automatically infer ownership or repair them. See [`docs/MIGRATION.md`](docs/MIGRATION.md).
+
+### Uninstall
+
+```bash
+python3 scripts/lunako.py uninstall /path/to/your/project
+```
+
+`uninstall` supports canonical installations and the enumerated supported legacy shapes. It removes only ownership that the lifecycle can attribute to the Harness under the tested contracts.
 
 ## Using it after installation
 
-You do not need a special LUNATIC HARNES prompt for ordinary work. Ask the coding agent to do the project task normally.
+Ordinary use does not require a special LUNAKO prompt. Ask the coding agent to perform the project task normally.
 
-For non-trivial implementation, architecture, migration, or cross-boundary work, the managed binding directs the coding agent to the Harness policy. The Harness then decides what structure, coordination, escalation, impact reasoning, and verification are actually needed.
+For non-trivial implementation, architecture, migration, or cross-boundary work, the managed binding points the agent to the Harness policy. The Harness can then shape the task, resolve architecture uncertainty, activate coordination only when justified, and close selected verification/assurance obligations.
 
 At a high level:
 
@@ -129,42 +125,42 @@ project-native task
 
 ## Model-role separation
 
-LUNATIC HARNES keeps stronger-model roles separate by purpose.
+The currently packaged logical roles separate purposes rather than treating a stronger model as a universal fallback.
 
 ```text
 sol_architect
-  -> unresolved Architecture uncertainty
+  -> unresolved architecture uncertainty
 
 sol_decision_reviewer
   -> review of an already-decided consequential decision
 
 sol_reviewer
-  -> post-implementation External Audit
+  -> post-implementation external audit
 ```
 
 Task size alone does not select these roles.
 
 ## Minimal example
 
-See [`examples/minimal-project/`](examples/minimal-project/) for a small onboarding walkthrough showing an existing `AGENTS.md`, managed-block insertion, status, and clean uninstall.
+See [`examples/minimal-project/`](examples/minimal-project/) for a disposable onboarding walkthrough with existing project-owned rules, canonical managed markers, status, sync, and clean uninstall.
 
 ## Validation
 
-The public package includes model-free validation for its package composition and tested install lifecycle.
+Run the standalone package validator from a clean projected/public checkout:
 
 ```bash
 python3 scripts/validate_public_release.py
 ```
 
-A concise description of the tested scope is available in [`docs/VALIDATION.md`](docs/VALIDATION.md).
+The validator exercises the tested canonical lifecycle and checks package dependency closure without reading back from the development repository. Detailed boundaries are in [`docs/VALIDATION.md`](docs/VALIDATION.md).
+
+## Historical Beta
+
+`v0.1.0-beta.1` is the historical public Beta and used the legacy product namespace. LUNAKO Harness retains bounded compatibility for the enumerated legacy installation shapes described in the migration documentation. This does not mean arbitrary historical or modified installations are supported.
 
 ## Feedback
 
-LUNATIC HARNES is in beta, and feedback from real project use is useful.
-
-[GitHub Issues](https://github.com/OsamuO/lunatic-harnes/issues) are the preferred channel for installation problems, unclear documentation, unnecessary or missed Harness activation, manual recovery, task failures, and useful real-world cases.
-
-Please share only project information you are comfortable making public. No telemetry, usage reporting, benchmark submission, or private project disclosure is required.
+Use GitHub Issues in `OsamuO/lunako-chan` for installation problems, documentation issues, lifecycle failures, or useful real-world cases. Share only information you are comfortable making public.
 
 ## License
 

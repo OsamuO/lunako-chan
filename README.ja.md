@@ -83,3 +83,60 @@ canonical Harness skill:
 ```bash
 python3 scripts/lunako.py sync /path/to/your/project
 ```
+
+`sync`は現在のcleanなLUNAKO Harness source checkoutにあるruntime bytesを使います。GitHubから自動updateする機能ではありません。
+
+### Supported legacy migration
+
+```bash
+python3 scripts/lunako.py status /path/to/your/project
+python3 scripts/lunako.py migrate /path/to/your/project
+```
+
+migration対象は、検証済みの列挙されたlegacy installation shapeだけです。drifted / mixed / unsupportedな旧installationは`CONFLICT`としてfail closedし、ownershipを推測した自動repairは行いません。詳細は[`docs/MIGRATION.md`](docs/MIGRATION.md)を参照してください。
+
+### Uninstall
+
+```bash
+python3 scripts/lunako.py uninstall /path/to/your/project
+```
+
+canonical installationおよび列挙されたsupported legacy shapeについて、tested ownership contractでLUNAKOに帰属できるmaterialだけを削除します。
+
+## インストール後
+
+通常利用でLUNAKO専用promptを毎回入力することは前提にしていません。通常どおりcoding agentへproject taskを依頼します。
+
+managed bindingを通じて、必要に応じてtask shaping、architecture escalation、coordination、impact reasoning、verification、assuranceを選択します。
+
+## Minimal Example
+
+[`examples/minimal-project/`](examples/minimal-project/)に、既存project rules、canonical managed markers、status、sync、uninstallを確認するdisposable exampleがあります。
+
+## Validation
+
+cleanなprojected/public checkoutから実行します。
+
+```bash
+python3 scripts/validate_public_release.py
+```
+
+standalone validatorはdevelopment repositoryへread-backせず、package内のdependency closureとtested canonical lifecycleを確認します。詳細は[`docs/VALIDATION.md`](docs/VALIDATION.md)を参照してください。
+
+## Historical Beta
+
+`v0.1.0-beta.1`はlegacy product namespaceを使用したhistorical public Betaです。LUNAKO Harnessはmigration documentに列挙された旧installation shapeについてのみbounded compatibilityを持ちます。任意に変更された旧installationまでsupportするという意味ではありません。
+
+## Feedback
+
+installation、documentation、lifecycle behaviorに関するfeedbackは`OsamuO/lunako-chan`のGitHub Issuesを利用してください。公開したくないproject情報を共有する必要はありません。
+
+## License
+
+Apache License 2.0. [`LICENSE`](LICENSE)を参照してください。
+
+---
+
+この日本語READMEはオンボーディング用です。仕様・runtime・validation documentsでは英語を基準とします。
+
+**Canonical project language: English**

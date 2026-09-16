@@ -118,17 +118,49 @@ project-native task
   -> resolve relevant project authority
   -> shape the work
   -> resolve architecture uncertainty
-  -> activate only justified coordination
-  -> execute
-  -> verify required obligations
-  -> integrate
+  -> activate only needed controls
+  -> implement and verify
+  -> close selected obligations
 ```
 
-## Validation and claims
+## Model-role separation
 
-LUNAKO Harness documents its validated scope conservatively. The project does not claim crash consistency, power-loss safety, ACID semantics, arbitrary legacy migration, or enforcement properties that have not been demonstrated by the tested runtime.
+The currently packaged logical roles separate purposes rather than treating a stronger model as a universal fallback.
 
-See [`docs/VALIDATION.md`](docs/VALIDATION.md) for the current tested boundary.
+```text
+sol_architect
+  -> unresolved architecture uncertainty
+
+sol_decision_reviewer
+  -> review of an already-decided consequential decision
+
+sol_reviewer
+  -> post-implementation external audit
+```
+
+Task size alone does not select these roles.
+
+## Minimal example
+
+See [`examples/minimal-project/`](examples/minimal-project/) for a disposable onboarding walkthrough with existing project-owned rules, canonical managed markers, status, sync, and clean uninstall.
+
+## Validation
+
+Run the standalone package validator from a clean projected/public checkout:
+
+```bash
+python3 scripts/validate_public_release.py
+```
+
+The validator exercises the tested canonical lifecycle and checks package dependency closure without reading back from the development repository. Detailed boundaries are in [`docs/VALIDATION.md`](docs/VALIDATION.md).
+
+## Historical Beta
+
+`v0.1.0-beta.1` is the historical public Beta and used the legacy product namespace. LUNAKO Harness retains bounded compatibility for the enumerated legacy installation shapes described in the migration documentation. This does not mean arbitrary historical or modified installations are supported.
+
+## Feedback
+
+Use GitHub Issues in `OsamuO/lunako-chan` for installation problems, documentation issues, lifecycle failures, or useful real-world cases. Share only information you are comfortable making public.
 
 ## License
 
